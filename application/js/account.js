@@ -288,10 +288,10 @@ function desplaymessage(alert,messege){
         error.classList="alert alert-danger d-none";
         setTimeout(() => {
             $("#accountForm")[0].reset();
-            $("#accountModal").modal("hide");
-        //     $("#showSign").attr('src')="";
-        //     $("#showDocument").attr("src")="";
-        //    $("#showImage").src="";
+            window.location.reload();
+            $("#showSign").attr('src')="";
+            $("#showDocument").attr("src")="";
+           $("#showImage").src="";
 
        
             success.classList="alert alert-success d-none";

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2023 at 03:02 PM
+-- Generation Time: Nov 20, 2023 at 03:34 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -86,6 +86,23 @@ END IF;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_account_sp` (IN `account_no` VARCHAR(250) CHARSET utf8mb4, IN `name` VARCHAR(250) CHARSET utf8mb4, IN `type` VARCHAR(250) CHARSET utf8mb4, IN `sex` VARCHAR(250) CHARSET utf8mb4, IN `phone` VARCHAR(250) CHARSET utf8mb4, IN `email` VARCHAR(250) CHARSET utf8mb4, IN `address` VARCHAR(250) CHARSET utf8mb4, IN `document_no` VARCHAR(250) CHARSET utf8mb4, IN `save_document_name` VARCHAR(250) CHARSET utf8mb4, IN `issue_date` DATE, IN `expire_date` DATE, IN `save_image_name` VARCHAR(250) CHARSET utf8mb4, IN `save_sign_name` VARCHAR(250) CHARSET utf8mb4, IN `branch` VARCHAR(250) CHARSET utf8mb4, IN `next_of_kind_name` VARCHAR(250) CHARSET utf8mb4, IN `next_of_kind_number` VARCHAR(250) CHARSET utf8mb4, IN `relationship` VARCHAR(250) CHARSET utf8mb4, IN `user_id` VARCHAR(250) CHARSET utf8mb4)   BEGIN
+IF EXISTS(SELECT a.phone FROM account a WHERE a.phone=phone)THEN
+SELECT 'deny' as msg;
+ELSEIF(expire_date<=issue_date)THEN
+SELECT 'expire';
+ELSE
+INSERT INTO `account`(`account_no`, `name`, `type`, `sex`, `phone`, `email`, `address`, `document_no`, `document_img`, `issue_date`, `expire_date`, `image`, `signature_img`, `branch_id`,`next_of_kind_name`, `next_of_kind_number`, `relationship`, `user_id`)
+VALUES
+(account_no,name,type,sex,phone,email,address,document_no,save_document_name,issue_date,
+ expire_date,save_image_name,save_sign_name,branch,next_of_kind_name,
+ next_of_kind_number,relationship,user_id);
+ SELECT 'saved' as msg;
+ END IF;
+
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_chequeNo_sp` (IN `chequeNo_sp` VARCHAR(250) CHARSET utf8mb4, IN `account_no_sp` VARCHAR(250) CHARSET utf8mb4, IN `user_id` VARCHAR(250) CHARSET utf8mb4)   BEGIN
 IF EXISTS(SELECT chequeno.chequeNo FROM chequeno WHERE chequeno.chequeNo=chequeNo_sp AND chequeno.account_no=account_no_sp)THEN
 SELECT 'deny' as meg;
@@ -102,6 +119,17 @@ SELECT 'deny' as meg;
 ELSE
 INSERT INTO `stock`(`stock_no`, `manager_id`, `manager_user`, `created_user`, `blance`)
 VALUES(stockNo_sp,manger_id_sp,manager_user_sp,created_user_sp,blance_sp);
+SELECT 'saved' as msg;
+
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_taller_sp` (IN `tallerNo_sp` VARCHAR(250) CHARSET utf8mb4, IN `taller_id_sp` VARCHAR(250) CHARSET utf8mb4, IN `taller_user_sp` VARCHAR(250) CHARSET utf8mb4, IN `created_user_sp` VARCHAR(250) CHARSET utf8mb4)   BEGIN
+IF EXISTS(SELECT t.taller_name FROM taller t WHERE t.taller_name=taller_id_sp)THEN
+SELECT 'deny' as msg;
+ELSE
+INSERT INTO `taller`(`taller_no`, `taller_name`, `taller_user`, `user_id`)
+VALUES(tallerNo_sp,taller_id_sp,taller_user_sp,created_user_sp);
 SELECT 'saved' as msg;
 
 END IF;
@@ -212,12 +240,25 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `searchAccount` (IN `phone_sp` VARCHAR(250) CHARSET utf8)   BEGIN
 IF NOT EXISTS(SELECT * FROM account a WHERE a.phone LIKE CONCAT('%',phone_sp,'%'))THEN
-SELECT "invalid" as msg;
-
+SELECT 'deny' as msg;
 ELSE
-SELECT * FROM account WHERE account.phone LIKE CONCAT('%',phone_sp,'%');
+SELECT * FROM account WHERE account.phone LIKE CONCAT('%',phone_sp,'%') ;
+
 
 END IF;
+
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `send_to_taller_sp` (IN `taller_no_sp` VARCHAR(250) CHARSET utf8mb4, IN `amount_sp` DECIMAL, IN `write_amount_sp` VARCHAR(250) CHARSET utf8mb4, IN `type_sp` VARCHAR(250) CHARSET utf8mb4, IN `user_id_sp` VARCHAR(250) CHARSET utf8mb4, IN `stock_no_sp` VARCHAR(250) CHARSET utf8mb4)   BEGIN
+INSERT INTO `stock_transaction`(`taller_id`, `amount`, `write_amount`,`type`, `user_id`,`stock_id`)
+ VALUES(taller_no_sp,amount_sp,write_amount_sp,type_sp,user_id_sp,stock_no_sp);
+ SELECT 'send' as msg;
+
+
+
+
+
 
 
 END$$
@@ -369,10 +410,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_id`, `account_no`, `name`, `type`, `sex`, `phone`, `email`, `address`, `document_no`, `document_img`, `issue_date`, `expire_date`, `image`, `signature_img`, `branch_id`, `next_of_kind_name`, `next_of_kind_number`, `relationship`, `user_id`, `date`) VALUES
-(1, 'SAL0001', 'hussein isse ali', 'Current', 'Male', '0615844908', 'xuska@gmail.com', 'yaaqshiid', '000233', 'SAL0001.png', '2023-11-14', '2023-11-15', 'SAL0001.png', 'SAL0001.png', 27, 'Luul Mohamed', '0618891225', 'Hooyo', 'USER005', '2023-11-14 19:18:40'),
-(2, 'SAL0002', 'Luul Mohamed Diini', 'Current', 'Femele', '06188912225', 'luul@gmail.com', 'yaaqshiid', '9908889', '.png', '2023-11-15', '2023-11-15', '.png', '.png', 27, 'Shukri Abdullhi', '0615503163', 'yaaqshiid', 'USER005', '2023-11-14 19:22:35'),
-(3, 'SAL0002', 'Luul Mohamed Diini', 'Current', 'Femele', '06188912225', 'luul@gmail.com', 'yaaqshiid', '9908889', 'SAL0003.png', '2023-11-15', '2023-11-15', 'SAL0003.png', 'SAL0003.png', 27, 'Shukri Abdullhi', '0615503163', 'yaaqshiid', 'USER005', '2023-11-14 19:23:39'),
-(4, 'SAL0003', 'ilka dhaqis', 'Current', 'Male', '0615844908', 'xuska@gmail.com', 'yaaqshiid', '000233', 'SAL0003.png', '2023-11-15', '2023-11-16', 'SAL0003.png', 'SAL0003.png', 0, 'Luul Mohamed', '0618891225', 'Hooyo', 'USER005', '2023-11-14 19:44:22');
+(1, 'SAL0001', 'hussein isse ali', 'Current', 'Male', '0615844908', 'hussein@gmail.com', 'yaaqshiid', '6639998389', 'SAL0001.png', '2023-11-20', '2023-12-30', 'SAL0001.png', 'SAL0001.png', 27, 'Luul Mohamed', '0618891225', 'Hooyo', 'USER005', '2023-11-20 09:20:19');
 
 -- --------------------------------------------------------
 
@@ -572,7 +610,34 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id`, `stock_no`, `manager_id`, `manager_user`, `created_user`, `blance`, `date`) VALUES
-(1, 'Stock0001', 'Empl001', 'USER001', 'USER005', 30000, '2023-11-17 13:59:47');
+(1, 'Stock0001', 'Empl001', 'USER001', 'USER005', 30000, '2023-11-17 13:59:47'),
+(2, 'Stock0002', 'Empl005', 'USER005', 'USER005', 60000, '2023-11-17 14:29:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_transaction`
+--
+
+CREATE TABLE `stock_transaction` (
+  `id` int(11) NOT NULL,
+  `taller_id` varchar(250) NOT NULL,
+  `amount` decimal(10,0) NOT NULL,
+  `write_amount` varchar(250) NOT NULL,
+  `type` varchar(250) NOT NULL,
+  `user_id` varchar(250) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `stock_id` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stock_transaction`
+--
+
+INSERT INTO `stock_transaction` (`id`, `taller_id`, `amount`, `write_amount`, `type`, `user_id`, `date`, `stock_id`) VALUES
+(1, 'Taller0001', 250, 'TWO HUNDRED FIFTY  DOLLARS', 'Send', 'USER005', '2023-11-20 13:42:04', 'Stock0002'),
+(2, 'Taller0002', 4000, 'FOUR THOUSAND  DOLLARS', 'Send', 'USER005', '2023-11-20 14:08:27', 'Stock0002'),
+(3, 'Taller0002', 400, 'FOUR HUNDRED  DOLLARS', 'Send', 'USER005', '2023-11-20 14:15:03', 'Stock0002');
 
 -- --------------------------------------------------------
 
@@ -681,6 +746,30 @@ INSERT INTO `system_links` (`id`, `name`, `link`, `category_id`, `date`) VALUES
 (18, 'Deposit Report', 'deposit_report.php', 2, '2023-02-21 14:47:30'),
 (19, 'Withdrow Report', 'withdrow_report.php', 2, '2023-02-21 15:19:56'),
 (20, 'User Authority', 'user_authority.php', 1, '2023-02-25 21:52:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `taller`
+--
+
+CREATE TABLE `taller` (
+  `id` int(11) NOT NULL,
+  `taller_no` varchar(250) NOT NULL,
+  `taller_name` varchar(250) NOT NULL,
+  `taller_user` varchar(250) NOT NULL,
+  `blance` decimal(10,0) NOT NULL DEFAULT 0,
+  `user_id` varchar(250) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `taller`
+--
+
+INSERT INTO `taller` (`id`, `taller_no`, `taller_name`, `taller_user`, `blance`, `user_id`, `date`) VALUES
+(1, 'Taller0001', 'Empl002', 'USER005', 0, 'USER005', '2023-11-18 15:05:39'),
+(2, 'Taller0002', 'Empl001', 'USER001', 0, 'USER005', '2023-11-20 10:43:23');
 
 -- --------------------------------------------------------
 
@@ -875,6 +964,12 @@ ALTER TABLE `stock`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stock_transaction`
+--
+ALTER TABLE `stock_transaction`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `system_actions`
 --
 ALTER TABLE `system_actions`
@@ -885,6 +980,12 @@ ALTER TABLE `system_actions`
 -- Indexes for table `system_links`
 --
 ALTER TABLE `system_links`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `taller`
+--
+ALTER TABLE `taller`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -916,7 +1017,7 @@ ALTER TABLE `withdrow`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `account_to_account`
@@ -952,7 +1053,13 @@ ALTER TABLE `deposit`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `stock_transaction`
+--
+ALTER TABLE `stock_transaction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `system_actions`
@@ -965,6 +1072,12 @@ ALTER TABLE `system_actions`
 --
 ALTER TABLE `system_links`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `taller`
+--
+ALTER TABLE `taller`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_authority`

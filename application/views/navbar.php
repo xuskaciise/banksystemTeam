@@ -56,13 +56,14 @@
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                             aria-expanded="true" aria-controls="collapseTwo">
                             <i class="fas fa-fw fa-wrench"></i>
-                            <span>Customer Information</span>
+                            <span>Customer Serices</span>
                         </a>
                         <div id="collapsePages" class="collapse" aria-labelledby="headingUtilities"
                             data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Transaction Reports:</h6>
-                                <a class="collapse-item" href="./account.php">Accounts</a>
+                                <a class="collapse-item" href="./account_list.php">Account List</a>
+                                <a class="collapse-item" href="./create_account.php">Create Accounts</a>
                                 <a class="collapse-item" href="./searchcustomer.php">Customer Search</a>
                                 <a class="collapse-item" href="./cheque.php">Create Cheque</a>
                               
@@ -113,6 +114,7 @@
                             </div>
                         </div>
                     </li>
+                    
                     
             
         

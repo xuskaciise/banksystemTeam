@@ -2,16 +2,16 @@
 session_start();
 include("../config/conn.php");
 
-function AddStockNo($conn){
+function AddTallerNo($conn){
     $data=array();
     extract($_POST);
-    $query="CALL create_stock_sp('$stockNo','$manger_id','$manager_user','$_SESSION[id]','$blance')";    
+    $query="CALL create_taller_sp('$tallerNo','$taller_id','$taller_user','$_SESSION[id]')";    
     $result=$conn->query($query);
     if($result){
        $row=$result->fetch_assoc();
        if(isset($row['msg'])){
         if($row['msg']=="deny"){
-            $data=array("status"=>false,"data"=>"Allready Exsists");
+            $data=array("status"=>false,"data"=>"This Taller Allready Exsists");
         }else{
             $data=array("status"=>true,"data"=>"successFull Registered");
         }
@@ -25,8 +25,7 @@ function ReadData($conn){
     $data=array();
     $data_array=array();
     extract($_POST);
-    $query="SELECT s.id,s.stock_no,e.First,s.manager_user,s.blance,date(s.date) date FROM stock s JOIN employee e 
-    ON s.manager_id=e.id WHERE s.manager_user='$_SESSION[id]'";
+    $query="SELECT * FROM `taller` WHERE 1";
     $result=$conn->query($query);
     if($result){
         while( $row=$result->fetch_assoc()){
@@ -38,28 +37,11 @@ function ReadData($conn){
     }
     echo json_encode($data);
 }
-function ReadTransaction($conn){
-    $data=array();
-    $data_array=array();
-    extract($_POST);
-    $query="SELECT `id`, `stock_id` , `taller_id`, `amount`, `write_amount`, `type`, `date`FROM `stock_transaction` WHERE 1";
-    $result=$conn->query($query);
-    if($result){
-        while( $row=$result->fetch_assoc()){
-         $data_array[]=$row;
-        }
-        $data=array("status"=>true,"data"=>$data_array);
-    }else{
-        $data=array("status"=>false,"data"=>$conn->error);
-    }
-    echo json_encode($data);
-}
-
 function DeleteData($conn){
     $data=array();
   
     extract($_POST);
-    $query="DELETE FROM chequeno  WHERE id='$id'";
+    $query="DELETE FROM taller  WHERE id='$id'";
     $result=$conn->query($query);
     if($result){
         $data=array("status"=>true,"data"=>"Deleted Successfully");
@@ -68,14 +50,11 @@ function DeleteData($conn){
     }
     echo json_encode($data);
 }
-
-
-        
+      
 function FetchData($conn){
     $data=array();
-
     extract($_POST);
-    $query="SELECT * FROM chequeno  WHERE id='$id'";
+    $query="SELECT * FROM taller  WHERE id='$id'";
     $result=$conn->query($query);
     if($result){
         $row=$result->fetch_assoc();
@@ -86,13 +65,12 @@ function FetchData($conn){
     echo json_encode($data);
 
 }
-
 function UpdateData($conn){
     $data=array();
     extract($_POST);
     
 
-    $query="UPDATE `chequeno` SET account_no='$accountNo' WHERE id='$id'";
+    $query="UPDATE `taller` SET taller_name='$taller_id',taller_user='$taller_user'  WHERE id='$id'";
     $result=$conn->query($query);
     if($result){
         
@@ -103,55 +81,31 @@ function UpdateData($conn){
     echo json_encode($data);
 
 } 
-
-function GenereteStockNo($conn){
-    $new_chequeNo='';
+function GenereteTallerNo($conn){
+    $new_taller='';
     $data=array();
-    $query="SELECT * FROM `stock` ORDER BY id DESC LIMIT 1";
+    $query="SELECT * FROM `taller` ORDER BY id DESC LIMIT 1";
     $result=$conn->query($query);
     if($result){
         $num_rows=$result->num_rows;
         if($num_rows>0){
             $row=$result->fetch_assoc();
-            $new_chequeNo= ++$row['stock_no'];
+            $new_taller= ++$row['taller_no'];
            
         }else{
-            $new_chequeNo="Stock0001";
+            $new_taller="Taller0001";
         }
-        $data=array("status"=>true,"data"=>$new_chequeNo);
+        $data=array("status"=>true,"data"=>$new_taller);
     }else{
         $data=array("status"=>false,"data"=>$conn->error);
     }
       echo json_encode($data);
-      return $new_chequeNo;
+      return $new_taller;
 
     
 }
 
 
-
-function SendToTaller($conn){
-    $data=array();
-    extract($_POST);
-    $query="CALL send_to_taller_sp('$taller_no','$amount','$write_amount','Send','$user_id','$stock_no')";
-    $result=$conn->query($query);
-    if($result){
-        $row=$result->fetch_assoc();
-        if(isset($row['msg'])){
-            if($row['msg']=="exsist"){
-                $data=array("status"=>false,"data"=>"Exsist");
-            }else{
-                $data=array("status"=>true,"data"=>"You transferred "."$".$amount." To  ".$taller_no);
-            }
-        }
-       
-
-    }else{
-        $data=array("status"=>false,"data"=>$conn->error);
-    }
-    echo json_encode($data);
- 
-}
 
 
 

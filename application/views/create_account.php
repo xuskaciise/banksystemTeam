@@ -4,6 +4,13 @@ session_start();
   header("location:../../index.php");
  }
 ?>
+
+<?php
+include("header.php");
+include("navbar.php");
+include("topbar.php");
+
+?>
 <style>
 
 #showImage,#showDocument,#showSign{
@@ -28,12 +35,6 @@ session_start();
 
 
 </style>
-<?php
-include("header.php");
-include("navbar.php");
-include("topbar.php");
-
-?>
    <!-- Begin Page Content -->
         <div class="container-fluid">
 
@@ -44,47 +45,10 @@ include("topbar.php");
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <!-- <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6> -->
-        <button class="btn btn-success btn-md btn-circle float-right" id="addnew"><i class="fas fa-plus"></i></button>
+    <h1 class="h3 mb-2 text-gray-800">Create Account</h1>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered accountTable" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Account No</th>
-                    <th>Name</th>
-                    <th>Account Type</th>
-                    <th>Sex</th>
-                    <th>Phone</th>   
-                    <th>Email</th>   
-                    <th>Image</th>  
-                    <th>Username</th>   
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-          
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal" id="accountModal">
-  <div class="modal-dialog  modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" >Account Form</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form id="accountForm" enctype="multipart/form-data">
+    <form id="accountForm" enctype="multipart/form-data">
         <div class="row">
             <div class="col-lg-12">
              <div class="alert alert-success d-none">
@@ -220,136 +184,14 @@ include("topbar.php");
      
       
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-success">Create Account</button>
       </div>
     </div>
 </form>
-  </div>
-</div>
-
-<div class="modal" id="ViewModal">
-  <div class="modal-dialog  modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-    
-        <h5 class="modal-title" >Employee Content</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <div id="print_eria">
-      <div id="titles">
-      <h5 class=" text-center m-2">Employee Content</h5>
-      <img src="../../assets/img/siu.png" alt="" style="width:80%;height:100px">
-      </div>
-      <div class="maincontainer">
-      <div id="container">
-        
-        <div class="row">
-         <div class="col-6">
-         <span>Account Number</span>
-          <h6 class=" p-2  bg-light " id="account_num"></h6>
-         </div>
-         <div class="col-6">
-         <span>Name</span>
-          <h6 class="d-flex  p-2  bg-light "  id="names"></h6>
-         </div>
-        </div>
-
-        <div class="row">
-         <div class="col-6">
-         <span>Account Type</span>
-          <h6 class="d-flex p-2  bg-light" id="types"></h6>
-         </div>
-         <div class="col-6">
-         <span>Sex</span>
-          <h6 class="d-flex  p-2  bg-light" id="sexs"></h6>
-         </div>
-        </div>
-
-        <div class="row">
-         <div class="col-6">
-         <span>Phone</span>
-          <h6 class="d-flex  p-2  bg-light" id="phones"></h6>
-         </div>
-         <div class="col-6">
-         <span>Email</span>
-          <h6 class="d-flex p-2  bg-light" id="emails"></h6>
-         </div>
-        </div>
-        <div class="row">
-         <div class="col-6">
-         <span>Address</span>
-          <h6 class="d-flex p-2  bg-light" id="addresss"></h6>
-         </div>
-         <div class="col-6">
-         <span>Document Number</span>
-          <h6 class="d-flex p-2  bg-light" id="document_nos"></h6>
-         </div>
-        </div>
-
-        <div class="row">
-         <div class="col-6">
-         <span>Issue Date</span>
-          <h6 class="d-flex p-2  bg-light" id="issue_date"></h6>
-         </div>
-         <div class="col-6">
-         <span>Expire Date</span>
-          <h6 class="d-flex p-2  bg-light " id="expire_date"></h6>
-         </div>
-        </div>
-        <div class="row">
-         <div class="col-6">
-         <span>Branch</span>
-          <h6 class="d-flex p-2  bg-light" id="branch_ids"></h6>
-         </div>
-         <div class="col-6">
-         <span>Next of Kind Name</span>
-          <h6 class="d-flex p-2  bg-light" id="next_of_kind_names"></h6>
-         </div>
-        </div>
-
-        <div class="row">
-         <div class="col-6">
-         <span>next of Kind Number</span>
-          <h6 class="d-flex p-2  bg-light" id="next_of_kind_numbers"></h6>
-         </div>
-         <div class="col-6">
-         <span>next of Kind Relationship</span>
-          <h6 class="d-flex p-2  bg-light" id="relationships"></h6>
-         </div>
-        </div>
-
-      
-        </div>
-        <div class="row" id="images">
-         <div class="col-4 mb-2">
-          
-         <img src="" alt="" id="document_imgs">
-
-         </div>
-         <div class="col-4 mb-2">
-          <img src="" alt="" id="showImage1">
-         </div>
-         <div class="col-4 mb-2">
-          <img src="" alt="" id="showSigns">
-         </div>
-        </div>
-        </div>
-        </div>
-        </div>
-      <div class="modal-footer">
-       
-   <button class="btn btn-success d-block" id="print_employee"><i class="fas fa-print"></i></button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-   
     </div>
-</form>
-  </div>
 </div>
+
+
 <?php
                         include("footer.php");
                         include("script.php");

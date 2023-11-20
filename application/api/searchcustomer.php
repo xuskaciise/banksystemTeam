@@ -5,15 +5,22 @@ include("../config/conn.php");
 
 function ReadData($conn){
     $data=array();
-    $data_array=array();
     extract($_POST);
+    // $phone=mysql_real_escape_string($_POST['phone']);
+
     $query="CALL searchAccount('$phone')";
     $result=$conn->query($query);
     if($result){
-        while( $row=$result->fetch_assoc()){
-         $data_array[]=$row;
+        while($row=$result->fetch_assoc()){
+            if(isset($row['msg'])){
+                if($row['msg']=="deny"){
+                    $data=array("status"=>false,"data"=>$phone." Not Exsists");                    
+                }
+               }else{
+                $data=array("status"=>true,"data"=>$row);
+               }
+             
         }
-        $data=array("status"=>true,"data"=>$data_array);
     }else{
         $data=array("status"=>false,"data"=>$conn->error);
     }

@@ -1,0 +1,2 @@
+(account_no,name,type,sex,phone,email,address,document_no,save_document_name,issue_date,expire_date,save_image_name,save_sign_name,branch,next_of_kind_name,
+        next_of_kind_number,relationship,user_id)

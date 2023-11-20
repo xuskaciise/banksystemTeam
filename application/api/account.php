@@ -83,20 +83,25 @@ function addAccount($conn){
     
  
     if(count($error_array)<=0){
-        $query="INSERT INTO `account`(`account_no`, `name`, `type`, `sex`, `phone`, `email`,
-         `address`, `document_no`, `document_img`, `issue_date`, `expire_date`, `image`, `signature_img`, `branch_id`,
-         `next_of_kind_name`, `next_of_kind_number`, `relationship`, `user_id`)VALUES
-        ('$account_no','$name','$type','$sex','$phone','$email','$address','$document_no',
+        $query="CALL create_account_sp('$account_no','$name','$type','$sex','$phone','$email','$address','$document_no',
         '$save_document_name','$issue_date','$expire_date','$save_image_name','$save_sign_name','$branch','$next_of_kind_name',
         '$next_of_kind_number','$relationship','$user_id')";
 
         $result=$conn->query($query);
 
         if($result){
-          move_uploaded_file($file_tmp,"../uploads/account/image/".$save_image_name);
-          move_uploaded_file($file_document_tmp,"../uploads/account/document/".$save_document_name);
-          move_uploaded_file($file_sign_tmp,"../uploads/account/sign/".$save_sign_name);
-         $data=array("status"=>true,"data"=>"saved Successfully");
+            while($row=$result->fetch_assoc()){
+                if(isset($row['msg'])){
+                 if($row['msg']=="deny"){
+                     $data=array("status"=>false,"data"=>$phone." Is Allready Exsists");
+                 }else{
+                    move_uploaded_file($file_tmp,"../uploads/account/image/".$save_image_name);
+                    move_uploaded_file($file_document_tmp,"../uploads/account/document/".$save_document_name);
+                    move_uploaded_file($file_sign_tmp,"../uploads/account/sign/".$save_sign_name);
+                     $data=array("status"=>true,"data"=>"successFull Registered");
+                 }
+                }
+            }
         }
     else{
         $data=array("status"=>false,"data"=>$conn->error);

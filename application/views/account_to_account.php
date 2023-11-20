@@ -130,7 +130,7 @@ include("topbar.php");
         <div class="col-12">
         <form id="getAccountForm">
         <label for="">Account Number</label>
-        <input type="number" name="" id="account_no" class="form-control" placeholder="Enter Account Number">
+        <input type="text" name="" id="account_no" class="form-control" placeholder="Enter Account Number">
         <button href="#" class="btn btn-primary btn-icon-split mt-2">
           <span class="icon text-white-50">
           <i class="fas fa-money-bill"></i>

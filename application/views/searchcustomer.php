@@ -91,8 +91,8 @@ header .logo img{
         <div class="container-fluid">
 
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Search Customer</h1>
-<p class="mb-4">This is Search Information</p>
+<h1 class="h3 mb-2 text-gray-800">Search Customer Info</h1>
+<p class="mb-4">Search Customer Account By Valid Phone Number</p>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -105,13 +105,13 @@ header .logo img{
     
         <div class="col-12">
         <form id="getAccountForm">
-        <label for="">Customer Number</label>
-        <input type="text" name="" id="account_no" class="form-control" placeholder="Enter Customer Number">
+        <label for="">Phone Number</label>
+        <input type="number" name="" id="phone" class="form-control" placeholder="Enter Customer Phone Number.....">
         <button href="#" class="btn btn-success btn-icon-split mt-2">
           <span class="icon text-white-50">
           <i class="fas fa-money-bill"></i>
           </span>
-          <span class="text">Get Customer Information </span>
+          <span class="text">Get Account Information </span>
       </button>
         </form>
         </div>
@@ -119,8 +119,12 @@ header .logo img{
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="deposit_info">
+<div class="container-fuild " id="customer_info">
+         
+      
+       </div>
+
+<!-- <div class="modal fade" id="customer_info">
   <div class="modal-dialog   modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -144,13 +148,27 @@ header .logo img{
         <div class="row">
           <div class="col-6">
             <label for="">Account No</label>
-           <input type="text" class="form-control" id="accountNo" readonly name="accountNo">
+           <h2  id="accountNo" name="accountNo"></h2>
           </div>
           <div class="col-6">
-            <label for="">Account Holder Name</label>
-          <input type="text" class="form-control" id="name" readonly>
-          <input type="hidden" name="branch_id" id="branch_id">
-          <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['id'];?>">
+            <label for="">Name</label>
+           <h2  id="name" name="accountNo"></h2>
+          </div>
+          <div class="col-6">
+            <label for="">Account Type</label>
+           <h2  id="type" name="accountNo"></h2>
+          </div>
+          <div class="col-6">
+            <label for="">Sex</label>
+           <h2 id="sex"></h2>
+          </div>
+          <div class="col-6">
+            <label for="">Phone</label>
+           <h2 id="phone" name="accountNo"></h2>
+          </div>
+          <div class="col-6">
+            <label for="">Email</label>
+           <h2 id="email" name="accountNo"></h2>
           </div>
         </div>
         <hr>
@@ -159,33 +177,11 @@ header .logo img{
             <span>Image</span>
             <img  id="image">
           </div>
-          <div class="col-6">
-            <label for="">Signutare</label>
-            <img  id="signuture">
-          </div>
+          
         </div>
-        <hr>
-        <div id="demo">
-        <div class="row">
-       
-          <div class="col-12">
-            <label for="">Amount </label>
-           <input type="text" class="form-control" id="amount" placeholder="Enter Amount You Went To deposit" required name="amount">
-          </div>
-         </div>
-         <div class="row">
-          <div class="col-6">
-            <label for="">deposit Person </label>
-           <input type="text" class="form-control" id="person" placeholder="Enter deposit Person" required name="person">
-          </div>
-          <div
-          <div class="col-6">
-            <label for="">Write Money </label>
-           <input type="text" class="form-control" id="write_amount" placeholder="Enter Write Money" required name="write_amount" readonly >
-          </div>
-          </div>
-          </div>
-          </div>
+        
+          
+          
        
      
       <div class="modal-footer">
@@ -196,8 +192,15 @@ header .logo img{
 </form>
   </div>
 </div>
- 
-<!-- Modal -->
+</div> -->
+
+
+
+
+
+
+
+
 <div class="modal fade" id="reportModal" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -274,13 +277,13 @@ header .logo img{
 <!-- /.container-fluid -->
 
 <?php
-                        include("footer.php");
+                        // include("footer.php");
                         include("script.php");
 
                         ?>
 
                       
-<script src="../js/deposit.js"></script>
+<script src="../js/searchCustomer.js"></script>
 <script type="text/javascript">
 google_ad_client = "ca-pub-2783044520727903";
 /* jQuery_demo */
